@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listings - FavHost</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  {% include 'navbar.html' with active='listings' %}
+
+  <div class="page-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Listings</h1>
+        <p class="page-subtitle">Manage properties, pricing, amenities, and photos</p>
+      </div>
+      <button class="filter-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Property
+      </button>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" class="search-input" placeholder="Search listings..." id="listingSearch">
+      <button class="filter-btn">All Status</button>
+      <button class="filter-btn">All Cities</button>
+    </div>
+
+    <div class="content-grid" id="listingsGrid">
+      <div class="content-card">
+        <div class="content-card-top">
+          <div class="content-card-thumb">
+            <img src="https://ui-avatars.com/api/?name=Beach+Villa&background=55c1d9&color=fff&size=48" alt="Beach Villa">
+          </div>
+          <div class="content-card-info">
+            <div class="content-card-title">Beach Villa</div>
+            <div class="content-card-sub">Miami, FL</div>
+          </div>
+          <span class="status-badge confirmed">Active</span>
+        </div>
+        <div class="content-card-meta">
+          <span>$350/night</span>
+          <span>4 bookings</span>
+          <span>92% occupied</span>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-card-top">
+          <div class="content-card-thumb">
+            <img src="https://ui-avatars.com/api/?name=Mountain+Retreat&background=2ecc71&color=fff&size=48" alt="Mountain Retreat">
+          </div>
+          <div class="content-card-info">
+            <div class="content-card-title">Mountain Retreat</div>
+            <div class="content-card-sub">Aspen, CO</div>
+          </div>
+          <span class="status-badge confirmed">Active</span>
+        </div>
+        <div class="content-card-meta">
+          <span>$280/night</span>
+          <span>2 bookings</span>
+          <span>68% occupied</span>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-card-top">
+          <div class="content-card-thumb">
+            <img src="https://ui-avatars.com/api/?name=City+Apartment&background=3498db&color=fff&size=48" alt="City Apartment">
+          </div>
+          <div class="content-card-info">
+            <div class="content-card-title">City Apartment</div>
+            <div class="content-card-sub">New York, NY</div>
+          </div>
+          <span class="status-badge confirmed">Active</span>
+        </div>
+        <div class="content-card-meta">
+          <span>$200/night</span>
+          <span>3 bookings</span>
+          <span>78% occupied</span>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-card-top">
+          <div class="content-card-thumb">
+            <img src="https://ui-avatars.com/api/?name=Lake+House&background=9b59b6&color=fff&size=48" alt="Lake House">
+          </div>
+          <div class="content-card-info">
+            <div class="content-card-title">Lake House</div>
+            <div class="content-card-sub">Lake Tahoe, CA</div>
+          </div>
+          <span class="status-badge confirmed">Active</span>
+        </div>
+        <div class="content-card-meta">
+          <span>$250/night</span>
+          <span>2 bookings</span>
+          <span>55% occupied</span>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-card-top">
+          <div class="content-card-thumb">
+            <img src="https://ui-avatars.com/api/?name=Garden+Studio&background=e67e22&color=fff&size=48" alt="Garden Studio">
+          </div>
+          <div class="content-card-info">
+            <div class="content-card-title">Garden Studio</div>
+            <div class="content-card-sub">Austin, TX</div>
+          </div>
+          <span class="status-badge pending">Inactive</span>
+        </div>
+        <div class="content-card-meta">
+          <span>$150/night</span>
+          <span>2 bookings</span>
+          <span>45% occupied</span>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-card-top">
+          <div class="content-card-thumb">
+            <img src="https://ui-avatars.com/api/?name=Skyline+Place&background=e74c3c&color=fff&size=48" alt="Skyline Penthouse">
+          </div>
+          <div class="content-card-info">
+            <div class="content-card-title">Skyline Penthouse</div>
+            <div class="content-card-sub">Chicago, IL</div>
+          </div>
+          <span class="status-badge confirmed">Active</span>
+        </div>
+        <div class="content-card-meta">
+          <span>$400/night</span>
+          <span>2 bookings</span>
+          <span>85% occupied</span>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-card-top">
+          <div class="content-card-thumb">
+            <img src="https://ui-avatars.com/api/?name=Cozy+Cottage&background=1abc9c&color=fff&size=48" alt="Cozy Cottage">
+          </div>
+          <div class="content-card-info">
+            <div class="content-card-title">Cozy Cottage</div>
+            <div class="content-card-sub">Nashville, TN</div>
+          </div>
+          <span class="status-badge confirmed">Active</span>
+        </div>
+        <div class="content-card-meta">
+          <span>$130/night</span>
+          <span>2 bookings</span>
+          <span>52% occupied</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enquiries - FavHost</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css" onerror="this.onerror=null;this.href='css/style.css'">
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <a href="index.html" class="logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="#55c1d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 22V12H15V22" stroke="#55c1d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>FavHost</span>
+        </a>
+      </div>
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="calendar.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Calendar</span>
+        </a>
+        <a href="reservations.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Reservations</span>
+        </a>
+        <a href="listings.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Listings</span>
+        </a>
+        <a href="tasks.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks</span>
+        </a>
+        <a href="enquiries.html" class="nav-item active">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Enquiries</span>
+        </a>
+      </nav>
+      <div class="navbar-right">
+        <button class="notif-btn" title="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+        <button class="avatar-btn">
+          <div class="avatar">
+            <img src="https://ui-avatars.com/api/?name=Host+User&background=55c1d9&color=fff&size=30" alt="Profile">
+          </div>
+          <span>Host User</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Enquiries</h1>
+        <p class="page-subtitle">Guest inquiries, messages, and booking requests</p>
+      </div>
+      <button class="filter-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Compose
+      </button>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" class="search-input" placeholder="Search messages..." id="enquirySearch">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Unread</button>
+      <button class="filter-btn">Booking Requests</button>
+      <button class="filter-btn">Archived</button>
+    </div>
+
+    <div class="card">
+      <div class="card-body message-list">
+        <div class="message-item">
+          <div class="message-avatar">
+            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=random&color=fff&size=40" alt="">
+          </div>
+          <div class="message-body">
+            <div class="message-header">
+              <span class="message-name">Sarah Johnson <span class="message-badge">New</span></span>
+              <span class="message-time">5 min ago</span>
+            </div>
+            <div class="message-preview">Hi! I'm interested in booking Beach Villa for the first week of July. Is it available? I'd love to know more about the amenities and nearby attractions.</div>
+          </div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">
+            <img src="https://ui-avatars.com/api/?name=Mike+Brown&background=random&color=fff&size=40" alt="">
+          </div>
+          <div class="message-body">
+            <div class="message-header">
+              <span class="message-name">Mike Brown <span class="message-badge">New</span></span>
+              <span class="message-time">1 hour ago</span>
+            </div>
+            <div class="message-preview">Can I get an early check-in for my reservation at Garden Studio? My flight arrives at 10 AM.</div>
+          </div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">
+            <img src="https://ui-avatars.com/api/?name=Emily+Davis&background=random&color=fff&size=40" alt="">
+          </div>
+          <div class="message-body">
+            <div class="message-header">
+              <span class="message-name">Emily Davis</span>
+              <span class="message-time">3 hours ago</span>
+            </div>
+            <div class="message-preview">Thank you for the wonderful stay at Mountain Retreat! The views were breathtaking. We'll definitely be back next year.</div>
+          </div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">
+            <img src="https://ui-avatars.com/api/?name=Booking+Request&background=random&color=fff&size=40" alt="">
+          </div>
+          <div class="message-body">
+            <div class="message-header">
+              <span class="message-name">Booking Request - City Apartment <span class="message-badge pending">Pending</span></span>
+              <span class="message-time">1 day ago</span>
+            </div>
+            <div class="message-preview">New booking request from James Taylor: Sep 5-10, 2 guests, $1,200 total. Waiting for your confirmation.</div>
+          </div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">
+            <img src="https://ui-avatars.com/api/?name=Lisa+Anderson&background=random&color=fff&size=40" alt="">
+          </div>
+          <div class="message-body">
+            <div class="message-header">
+              <span class="message-name">Lisa Anderson</span>
+              <span class="message-time">2 days ago</span>
+            </div>
+            <div class="message-preview">Is there a parking spot available at the City Apartment? I'll be renting a car during my stay.</div>
+          </div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">
+            <img src="https://ui-avatars.com/api/?name=Robert+Martinez&background=random&color=fff&size=40" alt="">
+          </div>
+          <div class="message-body">
+            <div class="message-header">
+              <span class="message-name">Robert Martinez</span>
+              <span class="message-time">3 days ago</span>
+            </div>
+            <div class="message-preview">The Lake House was perfect for our family reunion. The kitchen was well-stocked and the dock was beautiful!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
