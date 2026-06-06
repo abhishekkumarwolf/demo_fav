@@ -1,64 +1,178 @@
-const bookingsData = [
-  {id:1,propertyId:1,guestName:'John Smith',guestAvatar:'https://ui-avatars.com/api/?name=John+Smith&background=random&color=fff&size=40',checkIn:'2026-03-05',checkOut:'2026-03-10',status:'confirmed',totalPrice:1750,bookingSource:'Booking.com'},
-  {id:2,propertyId:1,guestName:'Sarah Johnson',guestAvatar:'https://ui-avatars.com/api/?name=Sarah+Johnson&background=random&color=fff&size=40',checkIn:'2026-03-12',checkOut:'2026-03-18',status:'confirmed',totalPrice:2100,bookingSource:'Airbnb'},
-  {id:3,propertyId:1,guestName:'Mike Brown',guestAvatar:'https://ui-avatars.com/api/?name=Mike+Brown&background=random&color=fff&size=40',checkIn:'2026-03-20',checkOut:'2026-03-25',status:'pending',totalPrice:1500,bookingSource:'Direct'},
-  {id:4,propertyId:2,guestName:'Emily Davis',guestAvatar:'https://ui-avatars.com/api/?name=Emily+Davis&background=random&color=fff&size=40',checkIn:'2026-03-03',checkOut:'2026-03-08',status:'confirmed',totalPrice:1200,bookingSource:'Booking.com'},
-  {id:5,propertyId:2,guestName:'Alex Wilson',guestAvatar:'https://ui-avatars.com/api/?name=Alex+Wilson&background=random&color=fff&size=40',checkIn:'2026-03-15',checkOut:'2026-03-22',status:'cancelled',totalPrice:1960,bookingSource:'Expedia'},
-  {id:6,propertyId:3,guestName:'Lisa Anderson',guestAvatar:'https://ui-avatars.com/api/?name=Lisa+Anderson&background=random&color=fff&size=40',checkIn:'2026-03-01',checkOut:'2026-03-06',status:'confirmed',totalPrice:900,bookingSource:'Airbnb'},
-  {id:7,propertyId:3,guestName:'James Taylor',guestAvatar:'https://ui-avatars.com/api/?name=James+Taylor&background=random&color=fff&size=40',checkIn:'2026-03-10',checkOut:'2026-03-14',status:'confirmed',totalPrice:800,bookingSource:'Booking.com'},
-  {id:8,propertyId:3,guestName:'Emma Thompson',guestAvatar:'https://ui-avatars.com/api/?name=Emma+Thompson&background=random&color=fff&size=40',checkIn:'2026-03-18',checkOut:'2026-03-24',status:'pending',totalPrice:1200,bookingSource:'Direct'},
-  {id:9,propertyId:4,guestName:'Robert Martinez',guestAvatar:'https://ui-avatars.com/api/?name=Robert+Martinez&background=random&color=fff&size=40',checkIn:'2026-03-04',checkOut:'2026-03-09',status:'confirmed',totalPrice:1100,bookingSource:'Booking.com'},
-  {id:10,propertyId:4,guestName:'Jennifer Garcia',guestAvatar:'https://ui-avatars.com/api/?name=Jennifer+Garcia&background=random&color=fff&size=40',checkIn:'2026-03-14',checkOut:'2026-03-20',status:'checked_out',totalPrice:1500,bookingSource:'Expedia'},
-  {id:11,propertyId:5,guestName:'David Miller',guestAvatar:'https://ui-avatars.com/api/?name=David+Miller&background=random&color=fff&size=40',checkIn:'2026-03-02',checkOut:'2026-03-07',status:'confirmed',totalPrice:750,bookingSource:'Airbnb'},
-  {id:12,propertyId:5,guestName:'Olivia White',guestAvatar:'https://ui-avatars.com/api/?name=Olivia+White&background=random&color=fff&size=40',checkIn:'2026-03-10',checkOut:'2026-03-16',status:'confirmed',totalPrice:1050,bookingSource:'Booking.com'},
-  {id:13,propertyId:6,guestName:'Daniel Lee',guestAvatar:'https://ui-avatars.com/api/?name=Daniel+Lee&background=random&color=fff&size=40',checkIn:'2026-03-08',checkOut:'2026-03-14',status:'confirmed',totalPrice:2800,bookingSource:'Booking.com'},
-  {id:14,propertyId:6,guestName:'Sophia Clark',guestAvatar:'https://ui-avatars.com/api/?name=Sophia+Clark&background=random&color=fff&size=40',checkIn:'2026-03-20',checkOut:'2026-03-28',status:'confirmed',totalPrice:4400,bookingSource:'Direct'},
-  {id:15,propertyId:7,guestName:'William Turner',guestAvatar:'https://ui-avatars.com/api/?name=William+Turner&background=random&color=fff&size=40',checkIn:'2026-03-06',checkOut:'2026-03-11',status:'pending',totalPrice:650,bookingSource:'Airbnb'},
-  {id:16,propertyId:1,guestName:'Nina Patel',guestAvatar:'https://ui-avatars.com/api/?name=Nina+Patel&background=random&color=fff&size=40',checkIn:'2026-03-27',checkOut:'2026-04-02',status:'confirmed',totalPrice:1800,bookingSource:'Expedia'},
-  {id:17,propertyId:7,guestName:'Oliver Harris',guestAvatar:'https://ui-avatars.com/api/?name=Oliver+Harris&background=random&color=fff&size=40',checkIn:'2026-03-17',checkOut:'2026-03-21',status:'confirmed',totalPrice:800,bookingSource:'Booking.com'},
-];
+let allReservations = [];
+let propertiesMap = {};
+let guestsMap = {};
 
-const propertyNames = {
-  1:'Beach Villa',2:'Mountain Retreat',3:'City Apartment',4:'Lake House',
-  5:'Garden Studio',6:'Skyline Penthouse',7:'Cozy Cottage'
-};
+function getCsrfToken() {
+  const match = document.cookie.match(/(^| )csrftoken=([^;]+)/);
+  return match ? match[2] : '';
+}
 
 function getStatusBadge(status) {
-  const cls = status.replace(' ', '_');
-  return `<span class="status-badge ${cls}">${status.replace('_', ' ')}</span>`;
+  return `<span class="status-badge ${status}">${status.replace('_', ' ')}</span>`;
 }
 
 function renderReservations(data) {
   const tbody = document.getElementById('reservationsTable');
   if (!data.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-muted">No reservations found.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="text-muted">No reservations found.</td></tr>';
     return;
   }
-  tbody.innerHTML = data.map(b => `
+  tbody.innerHTML = data.map(r => `
     <tr>
-      <td><strong>${b.guestName}</strong></td>
-      <td>${propertyNames[b.propertyId] || 'Unknown'}</td>
-      <td>${b.checkIn}</td>
-      <td>${b.checkOut}</td>
-      <td>${getStatusBadge(b.status)}</td>
-      <td><strong>$${b.totalPrice.toLocaleString()}</strong></td>
-      <td style="color:var(--color-text-secondary)">${b.bookingSource}</td>
+      <td><strong>${r.guestName}</strong></td>
+      <td><a href="/calendar/?property=${r.propertyId}" style="color:var(--color-primary);text-decoration:none;font-weight:500">${r.propertyName || 'Unknown'}</a></td>
+      <td>${r.checkIn}</td>
+      <td>${r.checkOut}</td>
+      <td>${r.nights} night${r.nights !== 1 ? 's' : ''}</td>
+      <td>${getStatusBadge(r.status)}</td>
+      <td><strong>$${Number(r.totalAmount).toLocaleString()}</strong></td>
+      <td style="color:var(--color-text-secondary)">${r.source || '-'}</td>
     </tr>
   `).join('');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderReservations(bookingsData);
-
-  const searchInput = document.getElementById('reservationSearch');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      const filtered = bookingsData.filter(b =>
-        b.guestName.toLowerCase().includes(q) ||
-        (propertyNames[b.propertyId] || '').toLowerCase().includes(q)
-      );
-      renderReservations(filtered);
+function loadReservations(search, status) {
+  let url = '/api/reservations/?';
+  if (search) url += 'search=' + encodeURIComponent(search) + '&';
+  if (status) url += 'status=' + encodeURIComponent(status) + '&';
+  return fetch(url)
+    .then(r => r.json())
+    .then(data => { allReservations = data; renderReservations(data); })
+    .catch(() => {
+      document.getElementById('reservationsTable').innerHTML =
+        '<tr><td colspan="8" class="text-muted">Failed to load reservations.</td></tr>';
     });
-  }
+}
+
+function loadProperties() {
+  return fetch('/api/properties/')
+    .then(r => r.json())
+    .then(data => {
+      const sel = document.getElementById('bookingProperty');
+      data.forEach(p => {
+        propertiesMap[p.id] = p.name;
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.name;
+        sel.appendChild(opt);
+      });
+    });
+}
+
+function loadGuests() {
+  return fetch('/api/guests/')
+    .then(r => r.json())
+    .then(data => {
+      const sel = document.getElementById('bookingGuest');
+      data.forEach(g => {
+        guestsMap[g.id] = g.name;
+        const opt = document.createElement('option');
+        opt.value = g.id;
+        opt.textContent = g.name;
+        sel.appendChild(opt);
+      });
+    });
+}
+
+function showModal() {
+  document.getElementById('createBookingModal').classList.add('open');
+  document.getElementById('formAlert').classList.remove('visible');
+  document.getElementById('formSuccess').classList.remove('visible');
+}
+
+function hideModal() {
+  document.getElementById('createBookingModal').classList.remove('open');
+  document.getElementById('createBookingForm').reset();
+  document.getElementById('formAlert').classList.remove('visible');
+  document.getElementById('formSuccess').classList.remove('visible');
+}
+
+function showError(msg) {
+  const el = document.getElementById('formAlert');
+  el.textContent = msg;
+  el.classList.add('visible');
+  document.getElementById('formSuccess').classList.remove('visible');
+}
+
+function showSuccess(msg) {
+  const el = document.getElementById('formSuccess');
+  el.textContent = msg;
+  el.classList.add('visible');
+  document.getElementById('formAlert').classList.remove('visible');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadReservations();
+  loadProperties();
+  loadGuests();
+
+  let currentSearch = '';
+  let currentStatus = '';
+
+  document.getElementById('reservationSearch').addEventListener('input', e => {
+    currentSearch = e.target.value.trim();
+    loadReservations(currentSearch, currentStatus);
+  });
+
+  document.querySelectorAll('.status-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.status-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentStatus = btn.dataset.status || '';
+      loadReservations(currentSearch, currentStatus);
+    });
+  });
+
+  document.getElementById('newReservationBtn').addEventListener('click', showModal);
+  document.getElementById('closeModalBtn').addEventListener('click', hideModal);
+  document.getElementById('cancelBtn').addEventListener('click', hideModal);
+  document.getElementById('createBookingModal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) hideModal();
+  });
+
+  document.getElementById('createBookingForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const property_id   = document.getElementById('bookingProperty').value;
+    const guest_id      = document.getElementById('bookingGuest').value;
+    const check_in      = document.getElementById('bookingCheckIn').value;
+    const check_out     = document.getElementById('bookingCheckOut').value;
+    const price_per_night = parseFloat(document.getElementById('bookingPrice').value) || 0;
+    const total_amount  = parseFloat(document.getElementById('bookingTotal').value) || 0;
+    const source        = document.getElementById('bookingSource').value;
+    const status        = document.getElementById('bookingStatus').value;
+
+    if (!property_id || !guest_id || !check_in || !check_out) {
+      showError('Please fill in all required fields.'); return;
+    }
+    if (check_in >= check_out) {
+      showError('Check-out must be after check-in.'); return;
+    }
+
+    const btn = document.getElementById('submitBooking');
+    btn.disabled = true; btn.textContent = 'Creating...';
+
+    fetch('/api/reservations/create/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() },
+      body: JSON.stringify({
+        property_id: parseInt(property_id), guest_id: parseInt(guest_id),
+        check_in, check_out, price_per_night, total_amount, source, status,
+      }),
+    })
+      .then(r => r.json().then(data => ({ ok: r.ok, status: r.status, data })))
+      .then(({ ok, status: httpStatus, data }) => {
+        if (ok) {
+          showSuccess('Reservation created!');
+          hideModal();
+          loadReservations(currentSearch, currentStatus);
+        } else if (httpStatus === 409) {
+          const c = data.collision;
+          showError(`${data.error} (${c.guestName}: ${c.checkIn} – ${c.checkOut})`);
+        } else {
+          showError(data.error || 'Failed to create reservation.');
+        }
+      })
+      .catch(() => showError('Network error. Please try again.'))
+      .finally(() => { btn.disabled = false; btn.textContent = 'Create Reservation'; });
+  });
 });

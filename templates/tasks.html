@@ -19,88 +19,20 @@
         <h1 class="page-title">Tasks</h1>
         <p class="page-subtitle">Cleaning schedules, maintenance requests, and operations</p>
       </div>
-      <button class="filter-btn primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        New Task
-      </button>
     </div>
 
     <div class="filter-bar">
-      <button class="filter-btn active">All Tasks</button>
-      <button class="filter-btn">Cleaning</button>
-      <button class="filter-btn">Maintenance</button>
-      <button class="filter-btn">Inspection</button>
-      <button class="filter-btn">High Priority</button>
+      <button class="filter-btn task-filter-btn active" data-type="" data-status="">All Tasks</button>
+      <button class="filter-btn task-filter-btn" data-type="cleaning" data-status="">Cleaning</button>
+      <button class="filter-btn task-filter-btn" data-type="maintenance" data-status="">Maintenance</button>
+      <button class="filter-btn task-filter-btn" data-type="inspection" data-status="">Inspection</button>
+      <button class="filter-btn task-filter-btn" data-type="" data-status="pending">Pending</button>
+      <button class="filter-btn task-filter-btn" data-type="" data-status="done">Done</button>
     </div>
 
     <div class="card">
       <div class="activity-list" id="taskList">
-        <div class="activity-item">
-          <div class="task-check"></div>
-          <div class="activity-content">
-            <div class="activity-title-row">
-              <span class="activity-text">Deep clean Beach Villa</span>
-              <span class="task-priority high">High</span>
-            </div>
-            <span class="activity-time">Due: Today at 4:00 PM - Assigned to Maria</span>
-          </div>
-          <div class="task-property">Beach Villa</div>
-        </div>
-        <div class="activity-item">
-          <div class="task-check"></div>
-          <div class="activity-content">
-            <div class="activity-title-row">
-              <span class="activity-text">Fix leaking faucet in City Apartment</span>
-              <span class="task-priority high">High</span>
-            </div>
-            <span class="activity-time">Due: Tomorrow at 10:00 AM - Assigned to Carlos</span>
-          </div>
-          <div class="task-property">City Apartment</div>
-        </div>
-        <div class="activity-item">
-          <div class="task-check"></div>
-          <div class="activity-content">
-            <div class="activity-title-row">
-              <span class="activity-text">Restock supplies at Mountain Retreat</span>
-              <span class="task-priority medium">Medium</span>
-            </div>
-            <span class="activity-time">Due: Jun 8, 2026 - Assigned to Maria</span>
-          </div>
-          <div class="task-property">Mountain Retreat</div>
-        </div>
-        <div class="activity-item">
-          <div class="task-check"></div>
-          <div class="activity-content">
-            <div class="activity-title-row">
-              <span class="activity-text">Pre-arrival inspection for Lake House</span>
-              <span class="task-priority low">Low</span>
-            </div>
-            <span class="activity-time">Due: Jun 10, 2026 - Assigned to James</span>
-          </div>
-          <div class="task-property">Lake House</div>
-        </div>
-        <div class="activity-item">
-          <div class="task-check"></div>
-          <div class="activity-content">
-            <div class="activity-title-row">
-              <span class="activity-text">Lawn maintenance at Cozy Cottage</span>
-              <span class="task-priority low">Low</span>
-            </div>
-            <span class="activity-time">Due: Jun 12, 2026 - Assigned to Garden Team</span>
-          </div>
-          <div class="task-property">Cozy Cottage</div>
-        </div>
-        <div class="activity-item">
-          <div class="task-check"></div>
-          <div class="activity-content">
-            <div class="activity-title-row">
-              <span class="activity-text">Replace HVAC filter at Skyline Penthouse</span>
-              <span class="task-priority medium">Medium</span>
-            </div>
-            <span class="activity-time">Due: Jun 15, 2026 - Assigned to Carlos</span>
-          </div>
-          <div class="task-property">Skyline Penthouse</div>
-        </div>
+        <div class="text-muted" style="padding:24px">Loading...</div>
       </div>
     </div>
   </div>

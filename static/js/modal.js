@@ -36,11 +36,11 @@ function openBookingModal(booking) {
       </div>
       <div class="modal-detail-item">
         <span class="modal-detail-label">Total Price</span>
-        <span class="modal-detail-value price-value">$${booking.totalPrice.toLocaleString()}</span>
+        <span class="modal-detail-value price-value">$${booking.totalAmount.toLocaleString()}</span>
       </div>
       <div class="modal-detail-item">
-        <span class="modal-detail-label">Booking Source</span>
-        <span class="modal-detail-value">${booking.bookingSource}</span>
+        <span class="modal-detail-label">Source</span>
+        <span class="modal-detail-value">${booking.source || '-'}</span>
       </div>
       <div class="modal-detail-item">
         <span class="modal-detail-label">Booking Link</span>

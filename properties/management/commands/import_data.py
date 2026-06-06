@@ -1,6 +1,9 @@
 import json
+import shutil
+from pathlib import Path
 from datetime import datetime, date
 from decimal import Decimal
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from properties.models import Property, Guest, Booking
 
@@ -64,6 +67,35 @@ BOOKINGS_DATA = [
 ]
 
 
+GUEST_AVATAR_MAP = {
+    'John Smith': 'm1.jpg',
+    'Sarah Johnson': 'w1.jpg',
+    'Mike Brown': 'm2.jpg',
+    'Emily Davis': 'w2.jpg',
+    'Alex Wilson': 'm3.jpg',
+    'Lisa Anderson': 'w3.jpg',
+    'James Taylor': 'm4.jpg',
+    'Emma Thompson': 'w4.jpg',
+    'Robert Martinez': 'm5.jpg',
+    'Jennifer Garcia': 'w5.jpg',
+    'David Miller': 'm6.jpg',
+    'Olivia White': 'w6.jpg',
+    'Daniel Lee': 'm7.jpg',
+    'Sophia Clark': 'w7.jpg',
+    'William Turner': 'm8.jpg',
+    'Nina Patel': 'w8.jpg',
+    'Oliver Harris': 'm9.jpg',
+}
+
+
+def copy_favpics_to_media():
+    src = Path(settings.BASE_DIR) / 'favpics'
+    dst = Path(settings.MEDIA_ROOT) / 'guest_avatars'
+    dst.mkdir(parents=True, exist_ok=True)
+    for f in src.glob('*.jpg'):
+        shutil.copy2(f, dst / f.name)
+
+
 def compute_price_per_night(total_price, check_in, check_out):
     nights = (check_out - check_in).days
     if nights <= 0:
@@ -93,6 +125,7 @@ class Command(BaseCommand):
             self.stdout.write(f'  {"Created" if created else "Updated"}: {prop.name}')
 
         self.stdout.write('Importing guests...')
+        copy_favpics_to_media()
         guest_cache = {}
         for b in BOOKINGS_DATA:
             name_parts = b['guestName'].strip().split(' ', 1)
@@ -100,18 +133,20 @@ class Command(BaseCommand):
             last_name = name_parts[1] if len(name_parts) > 1 else ''
 
             key = b['guestName']
+            avatar_file = GUEST_AVATAR_MAP.get(key)
+            profile_path = f'guest_avatars/{avatar_file}' if avatar_file else ''
+
             if key not in guest_cache:
                 guest, created = Guest.objects.get_or_create(
                     first_name=first_name,
                     last_name=last_name,
                     defaults={
-                        'profile_image': b['guestAvatar'],
                         'email': f'{first_name.lower()}.{last_name.lower().replace(" ", "")}@example.com',
                     }
                 )
-                if not created and guest.profile_image != b['guestAvatar']:
-                    guest.profile_image = b['guestAvatar']
-                    guest.save()
+                if profile_path:
+                    guest.profile_image.name = profile_path
+                    guest.save(update_fields=['profile_image'])
                 guest_cache[key] = guest
                 self.stdout.write(f'  {"Created" if created else "Updated"}: {guest}')
 
@@ -132,8 +167,8 @@ class Command(BaseCommand):
                     'check_in': check_in,
                     'check_out': check_out,
                     'price_per_night': price_per_night.quantize(Decimal('0.01')),
-                    'total_price': Decimal(str(b['totalPrice'])),
-                    'booking_source': b['bookingSource'],
+                    'total_amount': Decimal(str(b['totalPrice'])),
+                    'source': b['bookingSource'],
                     'booking_link': b['bookingLink'],
                     'status': b['status'],
                 }

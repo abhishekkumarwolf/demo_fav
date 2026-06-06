@@ -1,315 +1,228 @@
-const properties = [
-  {
-    id: 1,
-    name: 'Beach Villa',
-    image: 'https://ui-avatars.com/api/?name=Beach+Villa&background=55c1d9&color=fff&size=80&rounded=true&bold=true'
-  },
-  {
-    id: 2,
-    name: 'Mountain Retreat',
-    image: 'https://ui-avatars.com/api/?name=Mountain+Retreat&background=2ecc71&color=fff&size=80&rounded=true&bold=true'
-  },
-  {
-    id: 3,
-    name: 'City Apartment',
-    image: 'https://ui-avatars.com/api/?name=City+Apartment&background=3498db&color=fff&size=80&rounded=true&bold=true'
-  },
-  {
-    id: 4,
-    name: 'Lake House',
-    image: 'https://ui-avatars.com/api/?name=Lake+House&background=9b59b6&color=fff&size=80&rounded=true&bold=true'
-  },
-  {
-    id: 5,
-    name: 'Garden Studio',
-    image: 'https://ui-avatars.com/api/?name=Garden+Studio&background=e67e22&color=fff&size=80&rounded=true&bold=true'
-  },
-  {
-    id: 6,
-    name: 'Skyline Penthouse',
-    image: 'https://ui-avatars.com/api/?name=Skyline+Place&background=e74c3c&color=fff&size=80&rounded=true&bold=true'
-  },
-  {
-    id: 7,
-    name: 'Cozy Cottage',
-    image: 'https://ui-avatars.com/api/?name=Cozy+Cottage&background=1abc9c&color=fff&size=80&rounded=true&bold=true'
-  }
-];
+// ─── State ───────────────────────────────────────────────────────────────────
 
-const bookings = [
-  {
-    id: 1,
-    propertyId: 1,
-    guestName: 'John Smith',
-    guestAvatar: 'https://ui-avatars.com/api/?name=John+Smith&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-05',
-    checkOut: '2026-03-10',
-    status: 'confirmed',
-    totalPrice: 1750,
-    bookingSource: 'Booking.com',
-    bookingLink: 'https://booking.com/booking/1'
-  },
-  {
-    id: 2,
-    propertyId: 1,
-    guestName: 'Sarah Johnson',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Sarah+Johnson&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-12',
-    checkOut: '2026-03-18',
-    status: 'confirmed',
-    totalPrice: 2100,
-    bookingSource: 'Airbnb',
-    bookingLink: 'https://airbnb.com/h/2'
-  },
-  {
-    id: 3,
-    propertyId: 1,
-    guestName: 'Mike Brown',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Mike+Brown&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-20',
-    checkOut: '2026-03-25',
-    status: 'pending',
-    totalPrice: 1500,
-    bookingSource: 'Direct',
-    bookingLink: 'https://favhost.com/bookings/3'
-  },
-  {
-    id: 4,
-    propertyId: 2,
-    guestName: 'Emily Davis',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Emily+Davis&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-03',
-    checkOut: '2026-03-08',
-    status: 'confirmed',
-    totalPrice: 1200,
-    bookingSource: 'Booking.com',
-    bookingLink: 'https://booking.com/booking/4'
-  },
-  {
-    id: 5,
-    propertyId: 2,
-    guestName: 'Alex Wilson',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Alex+Wilson&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-15',
-    checkOut: '2026-03-22',
-    status: 'cancelled',
-    totalPrice: 1960,
-    bookingSource: 'Expedia',
-    bookingLink: 'https://expedia.com/bookings/5'
-  },
-  {
-    id: 6,
-    propertyId: 3,
-    guestName: 'Lisa Anderson',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Lisa+Anderson&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-01',
-    checkOut: '2026-03-06',
-    status: 'confirmed',
-    totalPrice: 900,
-    bookingSource: 'Airbnb',
-    bookingLink: 'https://airbnb.com/h/6'
-  },
-  {
-    id: 7,
-    propertyId: 3,
-    guestName: 'James Taylor',
-    guestAvatar: 'https://ui-avatars.com/api/?name=James+Taylor&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-10',
-    checkOut: '2026-03-14',
-    status: 'confirmed',
-    totalPrice: 800,
-    bookingSource: 'Booking.com',
-    bookingLink: 'https://booking.com/booking/7'
-  },
-  {
-    id: 8,
-    propertyId: 3,
-    guestName: 'Emma Thompson',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Emma+Thompson&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-18',
-    checkOut: '2026-03-24',
-    status: 'pending',
-    totalPrice: 1200,
-    bookingSource: 'Direct',
-    bookingLink: 'https://favhost.com/bookings/8'
-  },
-  {
-    id: 9,
-    propertyId: 4,
-    guestName: 'Robert Martinez',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Robert+Martinez&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-04',
-    checkOut: '2026-03-09',
-    status: 'confirmed',
-    totalPrice: 1100,
-    bookingSource: 'Booking.com',
-    bookingLink: 'https://booking.com/booking/9'
-  },
-  {
-    id: 10,
-    propertyId: 4,
-    guestName: 'Jennifer Garcia',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Jennifer+Garcia&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-14',
-    checkOut: '2026-03-20',
-    status: 'checked_out',
-    totalPrice: 1500,
-    bookingSource: 'Expedia',
-    bookingLink: 'https://expedia.com/bookings/10'
-  },
-  {
-    id: 11,
-    propertyId: 5,
-    guestName: 'David Miller',
-    guestAvatar: 'https://ui-avatars.com/api/?name=David+Miller&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-02',
-    checkOut: '2026-03-07',
-    status: 'confirmed',
-    totalPrice: 750,
-    bookingSource: 'Airbnb',
-    bookingLink: 'https://airbnb.com/h/11'
-  },
-  {
-    id: 12,
-    propertyId: 5,
-    guestName: 'Olivia White',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Olivia+White&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-10',
-    checkOut: '2026-03-16',
-    status: 'confirmed',
-    totalPrice: 1050,
-    bookingSource: 'Booking.com',
-    bookingLink: 'https://booking.com/booking/12'
-  },
-  {
-    id: 13,
-    propertyId: 6,
-    guestName: 'Daniel Lee',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Daniel+Lee&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-08',
-    checkOut: '2026-03-14',
-    status: 'confirmed',
-    totalPrice: 2800,
-    bookingSource: 'Booking.com',
-    bookingLink: 'https://booking.com/booking/13'
-  },
-  {
-    id: 14,
-    propertyId: 6,
-    guestName: 'Sophia Clark',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Sophia+Clark&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-20',
-    checkOut: '2026-03-28',
-    status: 'confirmed',
-    totalPrice: 4400,
-    bookingSource: 'Direct',
-    bookingLink: 'https://favhost.com/bookings/14'
-  },
-  {
-    id: 15,
-    propertyId: 7,
-    guestName: 'William Turner',
-    guestAvatar: 'https://ui-avatars.com/api/?name=William+Turner&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-06',
-    checkOut: '2026-03-11',
-    status: 'pending',
-    totalPrice: 650,
-    bookingSource: 'Airbnb',
-    bookingLink: 'https://airbnb.com/h/15'
-  },
-  {
-    id: 16,
-    propertyId: 1,
-    guestName: 'Nina Patel',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Nina+Patel&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-27',
-    checkOut: '2026-04-02',
-    status: 'confirmed',
-    totalPrice: 1800,
-    bookingSource: 'Expedia',
-    bookingLink: 'https://expedia.com/bookings/16'
-  },
-  {
-    id: 17,
-    propertyId: 7,
-    guestName: 'Oliver Harris',
-    guestAvatar: 'https://ui-avatars.com/api/?name=Oliver+Harris&background=random&color=fff&size=40&rounded=true',
-    checkIn: '2026-03-17',
-    checkOut: '2026-03-21',
-    status: 'confirmed',
-    totalPrice: 800,
-    bookingSource: 'Booking.com',
-    bookingLink: 'https://booking.com/booking/17'
-  }
-];
+let properties = [];
 
 const state = {
+  view: 'month',            // 'month' | 'week'
   selectedPropertyId: null,
-  currentMonth: new Date().getMonth(),
-  currentYear: new Date().getFullYear(),
-  searchFilter: ''
+  year:  new Date().getFullYear(),
+  month: new Date().getMonth(),  // 0-based
+  weekDay: new Date().getDate(),
+  searchFilter: '',
+  statusFilter: '',
 };
 
-function getBookingsForProperty(propertyId) {
-  return bookings.filter(b => b.propertyId === propertyId);
-}
-
-function getBookingCountForProperty(propertyId) {
-  return bookings.filter(b => b.propertyId === propertyId).length;
-}
+// ─── Utilities ────────────────────────────────────────────────────────────────
 
 function getPropertyById(id) {
   return properties.find(p => p.id === id);
 }
 
-function onPropertySelect(propertyId) {
-  state.selectedPropertyId = propertyId;
-  renderPropertyList(properties, propertyId, state.searchFilter);
-  refreshCalendar();
+function getBookingCountForProperty(id) {
+  return (getPropertyById(id) || {}).bookingCount || 0;
 }
 
-function refreshCalendar() {
-  const propertyBookings = state.selectedPropertyId
-    ? getBookingsForProperty(state.selectedPropertyId)
-    : [];
+// ─── Period title ─────────────────────────────────────────────────────────────
 
-  renderCalendar(state.currentYear, state.currentMonth, propertyBookings);
-}
-
-function updateMonthTitle() {
-  const date = new Date(state.currentYear, state.currentMonth);
-  const title = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  document.getElementById('monthTitle').textContent = title;
-}
-
-function loadMonth(delta) {
-  state.currentMonth += delta;
-  if (state.currentMonth > 11) {
-    state.currentMonth = 0;
-    state.currentYear++;
-  } else if (state.currentMonth < 0) {
-    state.currentMonth = 11;
-    state.currentYear--;
+function updatePeriodTitle() {
+  const el = document.getElementById('periodTitle');
+  if (state.view === 'month') {
+    el.textContent = new Date(state.year, state.month)
+      .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  } else {
+    // Week: show "Jun 1 – Jun 7, 2026"
+    const anchor = new Date(state.year, state.month, state.weekDay);
+    const dow    = anchor.getDay();
+    const sun    = new Date(anchor); sun.setDate(anchor.getDate() - dow);
+    const sat    = new Date(sun);    sat.setDate(sun.getDate() + 6);
+    const fmt    = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    el.textContent = `${fmt(sun)} – ${fmt(sat)}, ${sat.getFullYear()}`;
   }
-  updateMonthTitle();
-  refreshCalendar();
+}
+
+// ─── Fetch & render ───────────────────────────────────────────────────────────
+
+function fetchAndRender() {
+  if (!state.selectedPropertyId) {
+    _renderEmpty();
+    return;
+  }
+
+  const prop = getPropertyById(state.selectedPropertyId);
+
+  let url = `/api/properties/${state.selectedPropertyId}/reservations/?month=${state.month}&year=${state.year}`;
+  if (state.statusFilter) url += `&status=${state.statusFilter}`;
+
+  fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      const reservations = data.map(r => ({
+        id:          r.id,
+        propertyId:  r.propertyId,
+        propertyName: prop ? prop.name : '',
+        guestName:   r.guestName,
+        guestAvatar: r.guestAvatar ||
+          'https://ui-avatars.com/api/?name=' + encodeURIComponent(r.guestName) +
+          '&background=55c1d9&color=fff&size=40&rounded=true',
+        checkIn:     r.checkIn,
+        checkOut:    r.checkOut,
+        nights:      r.nights,
+        status:      r.status,
+        totalAmount: Number(r.totalAmount),
+        source:      r.source || '',
+        bookingLink: r.bookingLink || '',
+        notes:       r.notes || '',
+      }));
+
+      if (state.view === 'month') {
+        renderMonthView(state.year, state.month, reservations);
+      } else {
+        renderWeekView(state.year, state.month, state.weekDay, reservations);
+      }
+    })
+    .catch(() => _renderEmpty());
+}
+
+function _renderEmpty() {
+  if (state.view === 'month') {
+    renderMonthView(state.year, state.month, []);
+  } else {
+    renderWeekView(state.year, state.month, state.weekDay, []);
+  }
+}
+
+// ─── Property sidebar ─────────────────────────────────────────────────────────
+
+function renderPropertyList(filter) {
+  const container = document.getElementById('propertyList');
+  const countEl   = document.getElementById('propertyCount');
+
+  const filtered = properties.filter(p =>
+    p.name.toLowerCase().includes(filter.toLowerCase())
+  );
+  countEl.textContent = filtered.length;
+
+  if (!filtered.length) {
+    container.innerHTML = '<div class="no-properties">No properties found</div>';
+    return;
+  }
+
+  container.innerHTML = '';
+  filtered.forEach(p => {
+    const item = document.createElement('div');
+    item.className   = `property-item${p.id === state.selectedPropertyId ? ' active' : ''}`;
+    item.dataset.id  = p.id;
+
+    const count = p.bookingCount || 0;
+    item.innerHTML = `
+      <div class="property-thumb"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
+      <span class="property-name">${p.name}</span>
+      <div class="property-item-right" style="margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+        ${count > 0 ? `<span class="booking-badge">${count}</span>` : ''}
+        <button class="property-menu-btn" style="background: none; border: none; color: var(--color-text-muted); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center;" onclick="event.stopPropagation()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
+        </button>
+      </div>
+    `;
+    item.addEventListener('click', () => onPropertySelect(p.id));
+    container.appendChild(item);
+  });
+}
+
+function onPropertySelect(id) {
+  state.selectedPropertyId = id;
+  renderPropertyList(state.searchFilter);
+  fetchAndRender();
+}
+
+// ─── Navigation ───────────────────────────────────────────────────────────────
+
+function navigate(delta) {
+  if (state.view === 'month') {
+    state.month += delta;
+    if (state.month > 11) { state.month = 0;  state.year++; }
+    if (state.month < 0)  { state.month = 11; state.year--; }
+    state.weekDay = 1;
+  } else {
+    // Move by 1 week
+    const anchor = new Date(state.year, state.month, state.weekDay);
+    anchor.setDate(anchor.getDate() + delta * 7);
+    state.year    = anchor.getFullYear();
+    state.month   = anchor.getMonth();
+    state.weekDay = anchor.getDate();
+  }
+  updatePeriodTitle();
+  fetchAndRender();
+}
+
+// ─── View toggle ──────────────────────────────────────────────────────────────
+
+function setView(v) {
+  state.view = v;
+  document.querySelectorAll('.view-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === v);
+  });
+  if (v === 'week') {
+    // default to current week day within the current month
+    state.weekDay = new Date().getMonth() === state.month &&
+                    new Date().getFullYear() === state.year
+      ? new Date().getDate()
+      : 1;
+  }
+  updatePeriodTitle();
+  fetchAndRender();
+}
+
+// ─── Bootstrap ────────────────────────────────────────────────────────────────
+
+function loadData() {
+  fetch('/api/properties/')
+    .then(r => r.json())
+    .then(props => {
+      properties = props.map(p => ({
+        id:           p.id,
+        name:         p.name,
+        image:        p.image ||
+          'https://ui-avatars.com/api/?name=' + encodeURIComponent(p.name) +
+          '&background=55c1d9&color=fff&size=80&rounded=true&bold=true',
+        bookingCount: p.bookingCount || 0,
+        city:  p.city,
+        state: p.state,
+      }));
+
+      updatePeriodTitle();
+
+      // Honour ?property=<id> query param
+      const params     = new URLSearchParams(window.location.search);
+      const preselect  = params.get('property');
+      const match      = preselect && properties.find(p => p.id === parseInt(preselect));
+      state.selectedPropertyId = match ? match.id : (properties[0] ? properties[0].id : null);
+
+      renderPropertyList('');
+      fetchAndRender();
+    })
+    .catch(() => {
+      document.getElementById('periodTitle').textContent = 'Failed to load';
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  state.currentMonth = 2;
-  state.currentYear = 2026;
+  loadData();
 
-  updateMonthTitle();
+  document.getElementById('prevPeriod').addEventListener('click', () => navigate(-1));
+  document.getElementById('nextPeriod').addEventListener('click', () => navigate(+1));
 
-  state.selectedPropertyId = properties[0].id;
-  renderPropertyList(properties, state.selectedPropertyId, '');
-  refreshCalendar();
-
-  document.getElementById('prevMonth').addEventListener('click', () => loadMonth(-1));
-  document.getElementById('nextMonth').addEventListener('click', () => loadMonth(1));
-
-  document.getElementById('propertySearch').addEventListener('input', (e) => {
+  document.getElementById('propertySearch').addEventListener('input', e => {
     state.searchFilter = e.target.value;
-    renderPropertyList(properties, state.selectedPropertyId, state.searchFilter);
+    renderPropertyList(state.searchFilter);
+  });
+
+  document.getElementById('statusFilter').addEventListener('change', e => {
+    state.statusFilter = e.target.value;
+    fetchAndRender();
+  });
+
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => setView(btn.dataset.view));
   });
 });

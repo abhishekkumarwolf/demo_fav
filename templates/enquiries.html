@@ -19,96 +19,22 @@
         <h1 class="page-title">Enquiries</h1>
         <p class="page-subtitle">Guest inquiries, messages, and booking requests</p>
       </div>
-      <button class="filter-btn primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Compose
-      </button>
     </div>
 
     <div class="filter-bar">
-      <input type="text" class="search-input" placeholder="Search messages..." id="enquirySearch">
-      <button class="filter-btn active">All</button>
-      <button class="filter-btn">Unread</button>
-      <button class="filter-btn">Booking Requests</button>
-      <button class="filter-btn">Archived</button>
+      <button class="filter-btn inquiry-filter-btn active" data-status="">All</button>
+      <button class="filter-btn inquiry-filter-btn" data-status="new">New</button>
+      <button class="filter-btn inquiry-filter-btn" data-status="replied">Replied</button>
+      <button class="filter-btn inquiry-filter-btn" data-status="archived">Archived</button>
     </div>
 
     <div class="card">
-      <div class="card-body message-list">
-        <div class="message-item">
-          <div class="message-avatar">
-            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=random&color=fff&size=40" alt="">
-          </div>
-          <div class="message-body">
-            <div class="message-header">
-              <span class="message-name">Sarah Johnson <span class="message-badge">New</span></span>
-              <span class="message-time">5 min ago</span>
-            </div>
-            <div class="message-preview">Hi! I'm interested in booking Beach Villa for the first week of July. Is it available? I'd love to know more about the amenities and nearby attractions.</div>
-          </div>
-        </div>
-        <div class="message-item">
-          <div class="message-avatar">
-            <img src="https://ui-avatars.com/api/?name=Mike+Brown&background=random&color=fff&size=40" alt="">
-          </div>
-          <div class="message-body">
-            <div class="message-header">
-              <span class="message-name">Mike Brown <span class="message-badge">New</span></span>
-              <span class="message-time">1 hour ago</span>
-            </div>
-            <div class="message-preview">Can I get an early check-in for my reservation at Garden Studio? My flight arrives at 10 AM.</div>
-          </div>
-        </div>
-        <div class="message-item">
-          <div class="message-avatar">
-            <img src="https://ui-avatars.com/api/?name=Emily+Davis&background=random&color=fff&size=40" alt="">
-          </div>
-          <div class="message-body">
-            <div class="message-header">
-              <span class="message-name">Emily Davis</span>
-              <span class="message-time">3 hours ago</span>
-            </div>
-            <div class="message-preview">Thank you for the wonderful stay at Mountain Retreat! The views were breathtaking. We'll definitely be back next year.</div>
-          </div>
-        </div>
-        <div class="message-item">
-          <div class="message-avatar">
-            <img src="https://ui-avatars.com/api/?name=Booking+Request&background=random&color=fff&size=40" alt="">
-          </div>
-          <div class="message-body">
-            <div class="message-header">
-              <span class="message-name">Booking Request - City Apartment <span class="message-badge pending">Pending</span></span>
-              <span class="message-time">1 day ago</span>
-            </div>
-            <div class="message-preview">New booking request from James Taylor: Sep 5-10, 2 guests, $1,200 total. Waiting for your confirmation.</div>
-          </div>
-        </div>
-        <div class="message-item">
-          <div class="message-avatar">
-            <img src="https://ui-avatars.com/api/?name=Lisa+Anderson&background=random&color=fff&size=40" alt="">
-          </div>
-          <div class="message-body">
-            <div class="message-header">
-              <span class="message-name">Lisa Anderson</span>
-              <span class="message-time">2 days ago</span>
-            </div>
-            <div class="message-preview">Is there a parking spot available at the City Apartment? I'll be renting a car during my stay.</div>
-          </div>
-        </div>
-        <div class="message-item">
-          <div class="message-avatar">
-            <img src="https://ui-avatars.com/api/?name=Robert+Martinez&background=random&color=fff&size=40" alt="">
-          </div>
-          <div class="message-body">
-            <div class="message-header">
-              <span class="message-name">Robert Martinez</span>
-              <span class="message-time">3 days ago</span>
-            </div>
-            <div class="message-preview">The Lake House was perfect for our family reunion. The kitchen was well-stocked and the dock was beautiful!</div>
-          </div>
-        </div>
+      <div class="card-body message-list" id="inquiryList">
+        <div class="text-muted" style="padding:24px">Loading...</div>
       </div>
     </div>
   </div>
+
+  <script src="{% static 'js/inquiries.js' %}"></script>
 </body>
 </html>
