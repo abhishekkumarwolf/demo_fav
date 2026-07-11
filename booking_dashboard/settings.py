@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -52,11 +53,11 @@ WSGI_APPLICATION = 'booking_dashboard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'booking_db',
-        'USER': 'postgres',
-        'PASSWORD': '1@ranjan',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
