@@ -60,6 +60,7 @@ html, body {
   padding: 0 24px;
   gap: 32px;
   overflow: visible;
+  position: relative;
 }
 
 .navbar-left {
@@ -85,29 +86,33 @@ html, body {
 .navbar-nav {
   display: flex;
   align-items: center;
-  gap: 2px;
-  flex: 1;
-  justify-content: center;
+  gap: 6px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .nav-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  font-size: 14px;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px 10px;
+  font-size: 10px;
   font-weight: 500;
   color: var(--color-text-secondary);
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all 0.15s ease;
   white-space: nowrap;
   position: relative;
 }
 
 .nav-item svg {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
   stroke: currentColor;
   stroke-width: 1.8;
@@ -128,7 +133,7 @@ html, body {
 .nav-item.active::after {
   content: '';
   position: absolute;
-  bottom: -8px;
+  bottom: -16px;
   left: 50%;
   transform: translateX(-50%);
   width: 20px;
@@ -142,6 +147,7 @@ html, body {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .notif-btn {
@@ -699,20 +705,23 @@ html, body {
 
 .modal-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  text-align: center;
+  gap: 12px;
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--color-border);
 }
 
 .modal-guest-avatar {
-  width: 56px;
-  height: 56px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
   border: 3px solid var(--color-border-light);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
 .modal-guest-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -738,7 +747,7 @@ html, body {
   font-size: 12px;
   font-weight: 600;
   text-transform: capitalize;
-  margin-left: auto;
+  margin: 4px auto 0;
 }
 
 .modal-status-badge.status-confirmed  { background: #dff6fd; color: #2d7d8f; }
@@ -1210,12 +1219,12 @@ select.form-control { appearance: auto; cursor: pointer; }
 
 .week-booking-bar {
   position: absolute;
-  height: 28px;
-  border-radius: 14px;
+  height: 36px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 0 10px 0 4px;
+  padding: 0 12px 0 6px;
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
@@ -1234,8 +1243,8 @@ select.form-control { appearance: auto; cursor: pointer; }
 .week-booking-bar.status-checked_out { background: var(--color-checked-out); color: white; }
 
 .week-bar-avatar {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   flex-shrink: 0;
   object-fit: cover;
@@ -1364,21 +1373,21 @@ select.form-control { appearance: auto; cursor: pointer; }
 /* ─── Premium Mockup Booking Bar Custom Styling ───────────────────────────── */
 
 .booking-bar {
-  height: 26px !important;
-  border-radius: 13px !important;
+  height: 36px !important;
+  border-radius: 18px !important;
   font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 11px !important;
-  padding: 0 10px 0 5px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+  font-size: 13px !important;
+  padding: 0 12px 0 6px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.35) !important;
 }
 
 .booking-bar-avatar {
-  width: 18px !important;
-  height: 18px !important;
+  width: 24px !important;
+  height: 24px !important;
   border-radius: 50%;
-  border: 1.5px solid #ffffff;
+  border: 2px solid #ffffff;
 }
 
 .booking-bar.status-confirmed {
@@ -1446,4 +1455,30 @@ select.form-control { appearance: auto; cursor: pointer; }
   border-radius: 10px;
   margin-left: 5px;
 }
+ 
+/* ─── Grayish-Black Calendar Timeline Header Row ─────────────────────────── */
+ 
+.calendar-weekdays, .week-header {
+  background: #27272a !important; /* Grayish-black timeline header background */
+  border-bottom: 1px solid #3f3f46 !important;
+}
+ 
+.calendar-weekdays div, .week-header-cell {
+  border-right: 1px solid #3f3f46 !important;
+  color: #f4f4f5 !important;
+}
+ 
+.calendar-weekdays div:last-child, .week-header-cell:last-child {
+  border-right: none !important;
+}
+ 
+.week-dow {
+  color: #a1a1aa !important;
+}
+ 
+.week-date-num {
+  color: #f4f4f5 !important;
+}
+
+
 

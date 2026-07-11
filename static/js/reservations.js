@@ -1,6 +1,8 @@
 let allReservations = [];
 let propertiesMap = {};
 let guestsMap = {};
+let currentSearch = '';
+let currentStatus = '';
 
 function getCsrfToken() {
   const match = document.cookie.match(/(^| )csrftoken=([^;]+)/);
@@ -14,7 +16,7 @@ function getStatusBadge(status) {
 function renderReservations(data) {
   const tbody = document.getElementById('reservationsTable');
   if (!data.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="text-muted">No reservations found.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="text-muted">No reservations found.</td></tr>';
     return;
   }
   tbody.innerHTML = data.map(r => `
@@ -27,8 +29,28 @@ function renderReservations(data) {
       <td>${getStatusBadge(r.status)}</td>
       <td><strong>$${Number(r.totalAmount).toLocaleString()}</strong></td>
       <td style="color:var(--color-text-secondary)">${r.source || '-'}</td>
+      <td>
+        <button class="delete-res-btn" onclick="deleteReservation(${r.id})" style="background: none; border: none; font-size: 12px; font-weight: 500; color: var(--color-cancelled); cursor: pointer; padding: 4px;">Delete</button>
+      </td>
     </tr>
   `).join('');
+}
+
+function deleteReservation(id) {
+  if (confirm('Are you sure you want to delete this reservation?')) {
+    fetch(`/api/reservations/${id}/delete/`, {
+      method: 'DELETE',
+      headers: { 'X-CSRFToken': getCsrfToken() }
+    })
+      .then(r => {
+        if (r.ok) {
+          loadReservations(currentSearch, currentStatus);
+        } else {
+          alert('Failed to delete reservation.');
+        }
+      })
+      .catch(() => alert('Network error. Please try again.'));
+  }
 }
 
 function loadReservations(search, status) {
@@ -40,7 +62,7 @@ function loadReservations(search, status) {
     .then(data => { allReservations = data; renderReservations(data); })
     .catch(() => {
       document.getElementById('reservationsTable').innerHTML =
-        '<tr><td colspan="8" class="text-muted">Failed to load reservations.</td></tr>';
+        '<tr><td colspan="9" class="text-muted">Failed to load reservations.</td></tr>';
     });
 }
 
@@ -105,9 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadReservations();
   loadProperties();
   loadGuests();
-
-  let currentSearch = '';
-  let currentStatus = '';
 
   document.getElementById('reservationSearch').addEventListener('input', e => {
     currentSearch = e.target.value.trim();

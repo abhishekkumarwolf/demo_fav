@@ -5,13 +5,13 @@ from django.db import transaction
 from properties.models import Property, Guest, Reservation, Task, Inquiry
 
 PROPERTIES = [
-    {'id': 1, 'name': 'Beach Villa',       'city': 'Miami',        'state': 'FL', 'country': 'US', 'max_guests': 8,  'image': 'https://ui-avatars.com/api/?name=Beach+Villa&background=55c1d9&color=fff&size=80&rounded=true&bold=true'},
-    {'id': 2, 'name': 'Mountain Retreat',  'city': 'Aspen',        'state': 'CO', 'country': 'US', 'max_guests': 6,  'image': 'https://ui-avatars.com/api/?name=Mountain+Retreat&background=2ecc71&color=fff&size=80&rounded=true&bold=true'},
-    {'id': 3, 'name': 'City Apartment',    'city': 'New York',     'state': 'NY', 'country': 'US', 'max_guests': 4,  'image': 'https://ui-avatars.com/api/?name=City+Apartment&background=3498db&color=fff&size=80&rounded=true&bold=true'},
-    {'id': 4, 'name': 'Lake House',        'city': 'Lake Tahoe',   'state': 'CA', 'country': 'US', 'max_guests': 10, 'image': 'https://ui-avatars.com/api/?name=Lake+House&background=9b59b6&color=fff&size=80&rounded=true&bold=true'},
-    {'id': 5, 'name': 'Garden Studio',     'city': 'Austin',       'state': 'TX', 'country': 'US', 'max_guests': 2,  'image': 'https://ui-avatars.com/api/?name=Garden+Studio&background=e67e22&color=fff&size=80&rounded=true&bold=true'},
-    {'id': 6, 'name': 'Skyline Penthouse', 'city': 'Chicago',      'state': 'IL', 'country': 'US', 'max_guests': 6,  'image': 'https://ui-avatars.com/api/?name=Skyline+Penthouse&background=e74c3c&color=fff&size=80&rounded=true&bold=true'},
-    {'id': 7, 'name': 'Cozy Cottage',      'city': 'Nashville',    'state': 'TN', 'country': 'US', 'max_guests': 4,  'image': 'https://ui-avatars.com/api/?name=Cozy+Cottage&background=1abc9c&color=fff&size=80&rounded=true&bold=true'},
+    {'id': 1, 'name': 'Beach Villa',       'city': 'Miami',        'state': 'FL', 'country': 'US', 'max_guests': 8,  'image': '/media/guest_avatars/hpics/h1.jpg'},
+    {'id': 2, 'name': 'Mountain Retreat',  'city': 'Aspen',        'state': 'CO', 'country': 'US', 'max_guests': 6,  'image': '/media/guest_avatars/hpics/h2.jpg'},
+    {'id': 3, 'name': 'City Apartment',    'city': 'New York',     'state': 'NY', 'country': 'US', 'max_guests': 4,  'image': '/media/guest_avatars/hpics/h3.jpg'},
+    {'id': 4, 'name': 'Lake House',        'city': 'Lake Tahoe',   'state': 'CA', 'country': 'US', 'max_guests': 10, 'image': '/media/guest_avatars/hpics/h4.jpg'},
+    {'id': 5, 'name': 'Garden Studio',     'city': 'Austin',       'state': 'TX', 'country': 'US', 'max_guests': 2,  'image': '/media/guest_avatars/hpics/h5.jpg'},
+    {'id': 6, 'name': 'Skyline Penthouse', 'city': 'Chicago',      'state': 'IL', 'country': 'US', 'max_guests': 6,  'image': '/media/guest_avatars/hpics/h6.jpg'},
+    {'id': 7, 'name': 'Cozy Cottage',      'city': 'Nashville',    'state': 'TN', 'country': 'US', 'max_guests': 4,  'image': '/media/guest_avatars/hpics/h7.jpg'},
 ]
 
 GUESTS = [
@@ -176,6 +176,17 @@ class Command(BaseCommand):
                 status=i['status'],
             )
             self.stdout.write(f"  [Created] {i['guest_name']}")
+
+        # Reset sequences to prevent duplicate key violations on manual inserts
+        self.stdout.write('Resetting database sequences...')
+        from django.core.management import call_command
+        from django.db import connection
+        import io
+        out = io.StringIO()
+        call_command('sqlsequencereset', 'properties', stdout=out)
+        sql = out.getvalue()
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
 
         self.stdout.write(self.style.SUCCESS(
             f'\nDone. {len(PROPERTIES)} properties, {len(GUESTS)} guests, '

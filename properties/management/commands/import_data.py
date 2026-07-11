@@ -12,37 +12,37 @@ PROPERTIES_DATA = [
     {
         'id': 1,
         'name': 'Beach Villa',
-        'image': 'https://ui-avatars.com/api/?name=Beach+Villa&background=55c1d9&color=fff&size=80&rounded=true&bold=true'
+        'image': '/media/guest_avatars/hpics/h1.jpg'
     },
     {
         'id': 2,
         'name': 'Mountain Retreat',
-        'image': 'https://ui-avatars.com/api/?name=Mountain+Retreat&background=2ecc71&color=fff&size=80&rounded=true&bold=true'
+        'image': '/media/guest_avatars/hpics/h2.jpg'
     },
     {
         'id': 3,
         'name': 'City Apartment',
-        'image': 'https://ui-avatars.com/api/?name=City+Apartment&background=3498db&color=fff&size=80&rounded=true&bold=true'
+        'image': '/media/guest_avatars/hpics/h3.jpg'
     },
     {
         'id': 4,
         'name': 'Lake House',
-        'image': 'https://ui-avatars.com/api/?name=Lake+House&background=9b59b6&color=fff&size=80&rounded=true&bold=true'
+        'image': '/media/guest_avatars/hpics/h4.jpg'
     },
     {
         'id': 5,
         'name': 'Garden Studio',
-        'image': 'https://ui-avatars.com/api/?name=Garden+Studio&background=e67e22&color=fff&size=80&rounded=true&bold=true'
+        'image': '/media/guest_avatars/hpics/h5.jpg'
     },
     {
         'id': 6,
         'name': 'Skyline Penthouse',
-        'image': 'https://ui-avatars.com/api/?name=Skyline+Place&background=e74c3c&color=fff&size=80&rounded=true&bold=true'
+        'image': '/media/guest_avatars/hpics/h6.jpg'
     },
     {
         'id': 7,
         'name': 'Cozy Cottage',
-        'image': 'https://ui-avatars.com/api/?name=Cozy+Cottage&background=1abc9c&color=fff&size=80&rounded=true&bold=true'
+        'image': '/media/guest_avatars/hpics/h7.jpg'
     },
 ]
 

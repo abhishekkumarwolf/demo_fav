@@ -14,6 +14,7 @@ urlpatterns = [
     path('api/properties/', views.api_properties, name='api_properties'),
     path('api/properties/create/', views.api_create_property, name='api_create_property'),
     path('api/properties/<int:property_id>/', views.api_property_detail, name='api_property_detail'),
+    path('api/properties/<int:property_id>/delete/', views.api_delete_property, name='api_delete_property'),
     path('api/properties/<int:property_id>/reservations/', views.api_property_reservations, name='api_property_reservations'),
 
     # Reservations
@@ -21,6 +22,7 @@ urlpatterns = [
     path('api/reservations/create/', views.api_create_reservation, name='api_create_reservation'),
     path('api/reservations/<int:reservation_id>/', views.api_reservation_detail, name='api_reservation_detail'),
     path('api/reservations/<int:reservation_id>/update/', views.api_update_reservation, name='api_update_reservation'),
+    path('api/reservations/<int:reservation_id>/delete/', views.api_delete_reservation, name='api_delete_reservation'),
 
     # Guests
     path('api/guests/', views.api_guests, name='api_guests'),

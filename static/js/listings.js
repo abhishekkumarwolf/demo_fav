@@ -10,7 +10,7 @@ function renderListings(properties) {
     const img = p.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=55c1d9&color=fff&size=48`;
     const location = [p.city, p.country].filter(Boolean).join(', ') || 'No location';
     return `
-      <div class="content-card" onclick="window.location='/calendar/?property=${p.id}'">
+      <div class="content-card" onclick="if (!event.target.closest('button') && !event.target.closest('a')) window.location='/calendar/?property=${p.id}'">
         <div class="content-card-top">
           <div class="content-card-thumb">
             <img src="${img}" alt="${p.name}">
@@ -21,13 +21,34 @@ function renderListings(properties) {
           </div>
           <span class="status-badge confirmed">Active</span>
         </div>
-        <div class="content-card-meta">
+        <div class="content-card-meta" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
           <span>${p.bookingCount} booking${p.bookingCount !== 1 ? 's' : ''}</span>
-          <a href="/calendar/?property=${p.id}" onclick="event.stopPropagation()" style="margin-left:auto;font-size:12px;font-weight:500;color:var(--color-primary);text-decoration:none;">View Calendar →</a>
+          <div style="display: flex; align-items: center; gap: 12px; margin-left: auto;">
+            <button class="delete-listing-btn" onclick="deleteListing(event, ${p.id})" style="background: none; border: none; font-size: 12px; font-weight: 500; color: var(--color-cancelled); cursor: pointer; padding: 0;">Delete</button>
+            <a href="/calendar/?property=${p.id}" onclick="event.stopPropagation()" style="font-size:12px;font-weight:500;color:var(--color-primary);text-decoration:none;">View Calendar →</a>
+          </div>
         </div>
       </div>
     `;
   }).join('');
+}
+
+function deleteListing(event, id) {
+  if (event) event.stopPropagation();
+  if (confirm('Are you sure you want to delete this listing? All associated reservations and tasks will be deleted.')) {
+    fetch(`/api/properties/${id}/delete/`, {
+      method: 'DELETE',
+      headers: { 'X-CSRFToken': getCsrfToken() }
+    })
+      .then(r => {
+        if (r.ok) {
+          loadListings();
+        } else {
+          alert('Failed to delete listing.');
+        }
+      })
+      .catch(() => alert('Network error. Please try again.'));
+  }
 }
 
 function loadListings() {

@@ -1,5 +1,10 @@
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
+function getCsrfToken() {
+  const match = document.cookie.match(/(^| )csrftoken=([^;]+)/);
+  return match ? match[2] : '';
+}
+
 function fmtDate(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -141,17 +146,24 @@ function _renderMonthBars(bookings, firstDOW, daysInMonth, totalRows, year, mont
     overlay.style.gridColumn = '1 / 8';
     overlay.style.gridRow   = row + 1;
 
+    // Calculate vertical offset to center the lane(s) in the 120px cell
+    const maxLaneInRow = segsInRow.reduce((max, s) => Math.max(max, s.lane), 0);
+    const numLanes = maxLaneInRow + 1;
+    const occupiedHeight = numLanes * 42 - 6;
+    const startTop = Math.max(28, Math.round((120 - occupiedHeight) / 2));
+
     for (const seg of segsInRow) {
       const bar = seg.isFirst
         ? _buildBar(seg.bk, seg.bk.nights)
         : _buildContinuationBar(seg.bk);
 
       const colW  = 100 / 7;
-      const inset = colW * 0.4;
+      const inset = colW * 0.5;
       const left  = seg.segStartCol * colW + (seg.isFirst ? inset : 0);
       const right = (6 - seg.segEndCol) * colW + (seg.isLast  ? inset : 0);
 
-      bar.style.cssText += `position:absolute;left:${left}%;right:${right}%;top:${28 + seg.lane * 26}px;height:22px;min-width:0;`;
+      const topPos = startTop + seg.lane * 42;
+      bar.style.cssText += `position:absolute;left:${left}%;right:${right}%;top:${topPos}px;height:36px;min-width:0;`;
 
       bar.addEventListener('click', e => {
         e.stopPropagation();
@@ -290,7 +302,7 @@ function renderWeekView(year, month, day, bookings) {
   }
 
   const maxLane = laned.reduce((m, x) => Math.max(m, x.lane), 0);
-  const bodyHeight = (maxLane + 1) * 36 + 16;
+  const bodyHeight = (maxLane + 1) * 42 + 16;
 
   const body = document.createElement('div');
   body.className = 'week-body';
@@ -312,7 +324,7 @@ function renderWeekView(year, month, day, bookings) {
     bar.style.cssText = `
       left: calc(${seg.startCol} * (100% / 7) + 4px);
       right: calc(${6 - seg.endCol} * (100% / 7) + 4px);
-      top: ${seg.lane * 36 + 8}px;
+      top: ${seg.lane * 42 + 8}px;
     `;
     bar.title = `#${seg.bk.id} · ${seg.bk.guestName} · ${nightsLabel(seg.bk.nights)}`;
     bar.innerHTML = `
@@ -381,13 +393,39 @@ function openBookingModal(bk) {
         <span class="modal-detail-value" style="font-size:13px;font-weight:400">${bk.notes}</span>
       </div>` : ''}
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" style="display: flex; gap: 8px;">
       <button class="modal-btn modal-btn-secondary" data-modal-action="close">Close</button>
+      <button class="modal-btn" id="deleteBookingBtn" style="background:#ef4444;color:white;border:none;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;">Delete</button>
       <a href="/reservations/" class="modal-btn modal-btn-primary" style="text-decoration:none;text-align:center">Manage</a>
     </div>
   `;
 
   overlay.classList.add('open');
+
+  const deleteBtn = document.getElementById('deleteBookingBtn');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to delete this reservation?')) {
+        fetch(`/api/reservations/${bk.id}/delete/`, {
+          method: 'DELETE',
+          headers: { 'X-CSRFToken': getCsrfToken() }
+        })
+          .then(r => {
+            if (r.ok) {
+              closeModal();
+              if (typeof loadData === 'function') {
+                loadData();
+              } else if (typeof fetchAndRender === 'function') {
+                fetchAndRender();
+              }
+            } else {
+              alert('Failed to delete reservation.');
+            }
+          })
+          .catch(() => alert('Network error. Please try again.'));
+      }
+    });
+  }
 }
 
 function closeModal() {

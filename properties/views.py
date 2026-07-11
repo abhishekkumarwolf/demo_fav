@@ -416,3 +416,24 @@ def api_create_property(request):
         'maxGuests': prop.max_guests,
         'bookingCount': 0,
     }, status=201)
+
+
+# ─── Deletion APIs ─────────────────────────────────────────────────────────────
+
+@csrf_exempt
+def api_delete_property(request, property_id):
+    if request.method != 'DELETE':
+        return JsonResponse({'error': 'Method not allowed.'}, status=405)
+    p = get_object_or_404(Property, id=property_id)
+    p.delete()
+    return JsonResponse({'success': True})
+
+
+@csrf_exempt
+def api_delete_reservation(request, reservation_id):
+    if request.method != 'DELETE':
+        return JsonResponse({'error': 'Method not allowed.'}, status=405)
+    r = get_object_or_404(Reservation, id=reservation_id)
+    r.delete()
+    return JsonResponse({'success': True})
+
