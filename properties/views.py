@@ -10,6 +10,9 @@ from .models import Property, Guest, Reservation, Task, Inquiry
 
 # ─── Page views ────────────────────────────────────────────────────────────────
 
+def landing(request):
+    return render(request, 'landing.html')
+
 def index(request):
     return render(request, 'index.html')
 
