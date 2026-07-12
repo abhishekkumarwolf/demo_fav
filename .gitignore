@@ -1,0 +1,33 @@
+# Python & Django build/cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+*.pot
+*.local
+
+# Database
+db.sqlite3
+db.sqlite3-journal
+
+# Media and uploaded assets
+media/guest_avatars/
+staticfiles/
+
+# Secrets and environment configurations
+.env
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.gemini/
+.antigravityignore
+
+# OS specific files
+.DS_Store
+Thumbs.db
