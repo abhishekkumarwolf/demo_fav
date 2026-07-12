@@ -1,13 +1,13 @@
 from pathlib import Path
-import os
+from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-e2lc_rm6k_m-p6w2wu6e$ghuz79_dj39uzz#v-rj7xdmqq(646'
+SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -52,11 +52,11 @@ WSGI_APPLICATION = 'booking_dashboard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'booking_db',
-        'USER': 'postgres',
-        'PASSWORD': '1@ranjan',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': config('DB_NAME', default='booking_db'),
+        'USER': config('DB_USER', default='postgres'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST', default='127.0.0.1'),
+        'PORT': config('DB_PORT', default='5432'),
     }
 }
 
