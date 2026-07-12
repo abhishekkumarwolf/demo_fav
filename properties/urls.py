@@ -8,7 +8,8 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
 
     # Pages
-    path('', views.index, name='index'),
+    path('', views.landing, name='landing'),
+    path('dashboard/', views.index, name='index'),
     path('calendar/', views.calendar_view, name='calendar'),
     path('reservations/', views.reservations_view, name='reservations'),
     path('listings/', views.listings_view, name='listings'),

@@ -13,6 +13,9 @@ from .models import Property, Guest, Reservation, Task, Inquiry
 
 # ─── Page views ────────────────────────────────────────────────────────────────
 
+def landing(request):
+    return render(request, 'landing.html')
+
 def index(request):
     if request.user.is_authenticated:
         return render(request, 'index.html')
