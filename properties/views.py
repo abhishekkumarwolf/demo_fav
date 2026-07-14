@@ -16,10 +16,9 @@ from .models import Property, Guest, Reservation, Task, Inquiry
 def landing(request):
     return render(request, 'landing.html')
 
+@login_required
 def index(request):
-    if request.user.is_authenticated:
-        return render(request, 'index.html')
-    return render(request, 'landing.html')
+    return render(request, 'index.html')
 
 @login_required
 def calendar_view(request):
