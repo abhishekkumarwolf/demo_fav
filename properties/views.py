@@ -1,32 +1,80 @@
 import json
 from datetime import date
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q, Count, Prefetch
+from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import Property, Guest, Reservation, Task, Inquiry
 
 
 # ─── Page views ────────────────────────────────────────────────────────────────
 
+def landing(request):
+    return render(request, 'landing.html')
+
+@login_required
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def calendar_view(request):
     return render(request, 'calendar.html')
 
+@login_required
 def reservations_view(request):
     return render(request, 'reservations.html')
 
+@login_required
 def listings_view(request):
     return render(request, 'listings.html')
 
+@login_required
 def tasks_view(request):
     return render(request, 'tasks.html')
 
+@login_required
 def enquiries_view(request):
     return render(request, 'enquiries.html')
+
+
+# ─── Auth views ────────────────────────────────────────────────────────────────
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            next_url = request.POST.get('next') or request.GET.get('next')
+            return redirect(next_url or 'index')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
+
+
+def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            auth_login(request, user)
+            return redirect('index')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+
+@require_POST
+def logout_view(request):
+    auth_logout(request)
+    return redirect('index')
 
 
 # ─── Helpers ───────────────────────────────────────────────────────────────────
@@ -58,6 +106,7 @@ def _reservation_dict(r, include_property=False):
 
 # ─── Properties API ────────────────────────────────────────────────────────────
 
+@login_required
 @require_GET
 def api_properties(request):
     props = (
@@ -78,6 +127,7 @@ def api_properties(request):
     return JsonResponse(data, safe=False)
 
 
+@login_required
 @require_GET
 def api_property_detail(request, property_id):
     p = get_object_or_404(
@@ -100,6 +150,7 @@ def api_property_detail(request, property_id):
 
 # ─── Reservations API ──────────────────────────────────────────────────────────
 
+@login_required
 @require_GET
 def api_property_reservations(request, property_id):
     get_object_or_404(Property, id=property_id)
@@ -126,6 +177,7 @@ def api_property_reservations(request, property_id):
     return JsonResponse([_reservation_dict(r) for r in qs], safe=False)
 
 
+@login_required
 @require_GET
 def api_all_reservations(request):
     qs = (
@@ -146,6 +198,7 @@ def api_all_reservations(request):
     return JsonResponse([_reservation_dict(r, include_property=True) for r in qs], safe=False)
 
 
+@login_required
 @require_GET
 def api_reservation_detail(request, reservation_id):
     r = get_object_or_404(
@@ -157,6 +210,7 @@ def api_reservation_detail(request, reservation_id):
     return JsonResponse(d)
 
 
+@login_required
 @csrf_exempt
 @require_POST
 def api_create_reservation(request):
@@ -222,6 +276,7 @@ def api_create_reservation(request):
     return JsonResponse(d, status=201)
 
 
+@login_required
 @csrf_exempt
 def api_update_reservation(request, reservation_id):
     r = get_object_or_404(Reservation, id=reservation_id)
@@ -242,6 +297,7 @@ def api_update_reservation(request, reservation_id):
 
 # ─── Guests API ────────────────────────────────────────────────────────────────
 
+@login_required
 @require_GET
 def api_guests(request):
     guests = Guest.objects.all().order_by('first_name', 'last_name')
@@ -259,6 +315,7 @@ def api_guests(request):
 
 # ─── Tasks API ─────────────────────────────────────────────────────────────────
 
+@login_required
 @require_GET
 def api_tasks(request):
     qs = Task.objects.select_related('property', 'reservation__guest').order_by('due_date', '-priority')
@@ -286,6 +343,7 @@ def api_tasks(request):
     return JsonResponse(data, safe=False)
 
 
+@login_required
 @csrf_exempt
 def api_update_task(request, task_id):
     t = get_object_or_404(Task, id=task_id)
@@ -304,6 +362,7 @@ def api_update_task(request, task_id):
 
 # ─── Inquiries API ─────────────────────────────────────────────────────────────
 
+@login_required
 @require_GET
 def api_inquiries(request):
     qs = Inquiry.objects.select_related('property').order_by('-created_at')
@@ -323,6 +382,7 @@ def api_inquiries(request):
     return JsonResponse(data, safe=False)
 
 
+@login_required
 @csrf_exempt
 def api_update_inquiry(request, inquiry_id):
     i = get_object_or_404(Inquiry, id=inquiry_id)
@@ -340,6 +400,7 @@ def api_update_inquiry(request, inquiry_id):
 
 # ─── Dashboard stats API ───────────────────────────────────────────────────────
 
+@login_required
 @require_GET
 def api_dashboard_stats(request):
     from django.db.models import Avg
@@ -364,6 +425,7 @@ def api_dashboard_stats(request):
 
 # ─── Property Creation API ─────────────────────────────────────────────────────
 
+@login_required
 @csrf_exempt
 @require_POST
 def api_create_property(request):
@@ -420,6 +482,7 @@ def api_create_property(request):
 
 # ─── Deletion APIs ─────────────────────────────────────────────────────────────
 
+@login_required
 @csrf_exempt
 def api_delete_property(request, property_id):
     if request.method != 'DELETE':
@@ -429,6 +492,7 @@ def api_delete_property(request, property_id):
     return JsonResponse({'success': True})
 
 
+@login_required
 @csrf_exempt
 def api_delete_reservation(request, reservation_id):
     if request.method != 'DELETE':
