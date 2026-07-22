@@ -1,16 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendar - FavHost</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.1">
-</head>
-<body>
+
+{% block title %}Calendar - FavHost{% endblock %}
+
+{% block content %}
   {% include 'navbar.html' with active='calendar' %}
 
   <div class="page-content page-content--calendar">
@@ -47,7 +40,7 @@
           <option value="cancelled">Cancelled</option>
           <option value="checked_out">Checked Out</option>
         </select>
-        
+
         <!-- View Toggle buttons (Month/Week) -->
         <div class="view-toggle" style="background: var(--color-bg); border-radius: 8px; padding: 2px; display: flex; gap: 2px;">
           <button class="view-btn active" id="monthViewBtn" data-view="month" style="border: none; background: none; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--color-text-secondary); font-family: var(--font-family);">Month</button>
@@ -120,8 +113,9 @@
       <div class="modal-content" id="modalContent"></div>
     </div>
   </div>
+{% endblock %}
 
+{% block extra_js %}
   <script src="{% static 'js/calendar.js' %}"></script>
   <script src="{% static 'js/app.js' %}"></script>
-</body>
-</html>
+{% endblock %}

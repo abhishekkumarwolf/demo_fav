@@ -7,6 +7,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+GA_MEASUREMENT_ID = config('GA_MEASUREMENT_ID', default='')
+
 ALLOWED_HOSTS = ['3.110.172.172', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
@@ -42,6 +44,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'booking_dashboard.context_processors.analytics',
             ],
         },
     },

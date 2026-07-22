@@ -1,17 +1,17 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FavHost - Professional Short-Term Rental Property Management Dashboard</title>
+
+{% block title %}FavHost - Professional Short-Term Rental Property Management Dashboard{% endblock %}
+
+{% block meta_description %}
   <meta name="description" content="Centralize bookings, operations, tasks, and guest communications across Airbnb, Booking.com, and VRBO in one beautiful, real-time dashboard.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block stylesheet %}
   <link rel="stylesheet" href="{% static 'css/landing.css' %}?v=1.0">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
 
   <!-- --- NAVIGATION --- -->
   <header class="landing-nav" id="landingNav">
@@ -23,7 +23,7 @@
         </svg>
         <span>FavHost</span>
       </a>
-      
+
       <ul class="nav-menu">
         <li><a href="#features" class="nav-link">Features</a></li>
         <li><a href="#calculator" class="nav-link">Calculator</a></li>
@@ -46,16 +46,16 @@
           <span class="pulse-dot">✨</span>
           <span>Automated Booking Sync & Overlap Prevention</span>
         </div>
-        
+
         <h1 class="hero-title">
           <span class="gradient-text">Streamline Your Rentals.</span><br>
           Multiply Your Revenue.
         </h1>
-        
+
         <p class="hero-subtitle">
           FavHost centralizes your bookings, cleaning schedules, maintenance logs, and guest communications into one premium dashboard. Built specifically for short-term rental operators.
         </p>
-        
+
         <div class="hero-cta">
           <a href="{% url 'index' %}" class="btn btn-primary btn-large" id="heroBtnPrimary">Launch Dashboard</a>
           <a href="#features" class="btn btn-secondary btn-large">Explore Features ↓</a>
@@ -106,7 +106,7 @@
             <div class="mockup-title">FavHost Dashboard</div>
             <div style="width: 42px;"></div>
           </div>
-          
+
           <div class="mockup-metrics">
             <div class="mockup-metric-card">
               <div class="mockup-metric-icon">🏢</div>
@@ -180,7 +180,7 @@
         </div>
         <h3>Multi-Channel Calendar</h3>
         <p>Sync all reservation channels on a single timeline layout. Automatically prevent overlaps and update availabilities across OTAs in real time.</p>
-        
+
         <div class="feature-graphic">
           <div class="cal-graph-line">
             <div class="cal-graph-cell">
@@ -207,7 +207,7 @@
         </div>
         <h3>Unified Guest Communications</h3>
         <p>Manage conversations, booking inquiries, and notifications in a centralized mailbox. Real-time badging updates tell you when questions are waiting.</p>
-        
+
         <div class="feature-graphic" style="justify-content: flex-start;">
           <div class="inbox-msg">
             <span class="inbox-dot"></span>
@@ -228,7 +228,7 @@
         </div>
         <h3>Operational Operations</h3>
         <p>Automate check-out cleaning schedules, maintenance requests, and properties inspections. Assign checklist items directly to your staff.</p>
-        
+
         <div class="feature-graphic" style="justify-content: flex-start; padding-top: 16px;">
           <div class="task-item-mock checked">
             <span class="task-checkbox-mock"></span>
@@ -249,7 +249,7 @@
       <div class="calc-inputs">
         <h2>See How Much You Can Scale</h2>
         <p>Use our interactive earnings calculator to estimate the revenue increases and operational hours saved by moving your management to FavHost.</p>
-        
+
         <div class="slider-group">
           <div class="slider-header">
             <span>Number of Properties</span>
@@ -489,7 +489,9 @@
       <span>Privacy Policy | Terms of Service</span>
     </div>
   </footer>
+{% endblock %}
 
+{% block extra_js %}
   <!-- --- JAVASCRIPT FOR CALCULATOR, PRICING TOGGLE, AND FAQ ACCORDIONS --- -->
   <script>
     // Navigation Scroll Background Change
@@ -507,7 +509,7 @@
     const rateRange = document.getElementById('rateRange');
     const propValDisplay = document.getElementById('propVal');
     const rateValDisplay = document.getElementById('rateVal');
-    
+
     const calcRevenue = document.getElementById('calcRevenue');
     const calcHours = document.getElementById('calcHours');
     const calcEfficiency = document.getElementById('calcEfficiency');
@@ -515,7 +517,7 @@
     function updateCalculator() {
       const props = parseInt(propRange.value);
       const rate = parseInt(rateRange.value);
-      
+
       propValDisplay.textContent = props + (props === 1 ? ' property' : ' properties');
       rateValDisplay.textContent = '$' + rate + ' / night';
 
@@ -551,7 +553,7 @@
         // Yearly
         labelYearly.classList.add('active');
         labelMonthly.classList.remove('active');
-        
+
         priceStarter.textContent = '$15';
         periodStarter.textContent = '/ month (billed yearly)';
         pricePro.textContent = '$39';
@@ -589,5 +591,4 @@
       });
     });
   </script>
-</body>
-</html>
+{% endblock %}
