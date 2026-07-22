@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { margin: 24mm 18mm; }
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #1f2328;
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+  h1 {
+    font-size: 20pt;
+    margin-bottom: 2px;
+    color: #16324a;
+  }
+  .subtitle {
+    color: #5b6672;
+    font-size: 10.5pt;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 13pt;
+    color: #ffffff;
+    background: #2b5876;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+  .entry {
+    margin-bottom: 14px;
+  }
+  .cmd {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 9.8pt;
+    background: #e8eef2;
+    padding: 5px 8px;
+    border-radius: 3px;
+    border: 1px solid #c3d0d8;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #000000;
+    display: block;
+  }
+  .desc {
+    font-size: 9.7pt;
+    color: #383f45;
+    padding: 5px 2px 0px 2px;
+  }
+  .footer-note {
+    margin-top: 26px;
+    padding: 10px 12px;
+    background: #eef4f8;
+    border-left: 3px solid #2b5876;
+    font-size: 9.7pt;
+    color: #34424c;
+  }
+</style>
+</head>
+<body>
+
+<h1>Ubuntu Server Command Reference</h1>
+<div class="subtitle">For Django projects (Daphne / Gunicorn, Nginx, Celery, Redis, PostgreSQL, systemd, Git) &mdash; FavHost</div>
+
+<h2>Service Management (systemctl)</h2>
+
+<div class="entry"><div class="cmd">systemctl status &lt;service-name&gt;</div>
+<div class="desc">Shows whether a service is running, since when, and its last few log lines. Your first command for any "is it broken" question.</div></div>
+
+<div class="entry"><div class="cmd">sudo systemctl start &lt;service-name&gt;</div>
+<div class="desc">Starts a service right now. Does not affect whether it starts automatically on the next reboot.</div></div>
+
+<div class="entry"><div class="cmd">sudo systemctl stop &lt;service-name&gt;</div>
+<div class="desc">Stops a running service immediately.</div></div>
+
+<div class="entry"><div class="cmd">sudo systemctl restart &lt;service-name&gt;</div>
+<div class="desc">Stops then starts a service &mdash; use after changing code or config that the service needs to reload.</div></div>
+
+<div class="entry"><div class="cmd">sudo systemctl daemon-reload</div>
+<div class="desc">Tells systemd to re-read service files after you've created or edited one. Required before a new/edited .service file will take effect.</div></div>
+
+<div class="entry"><div class="cmd">sudo systemctl enable &lt;service-name&gt;</div>
+<div class="desc">Sets a service to auto-start every time the server boots. Does not start it immediately by itself.</div></div>
+
+<div class="entry"><div class="cmd">sudo systemctl disable &lt;service-name&gt;</div>
+<div class="desc">Removes a service from auto-starting on boot.</div></div>
+
+<div class="entry"><div class="cmd">systemctl list-units --type=service --all | grep -i &lt;keyword&gt;</div>
+<div class="desc">Finds the real name of a service when you're not sure what it's called (e.g. searching "gunicorn" or "favhost").</div></div>
+
+<h2>Logs &amp; Debugging</h2>
+
+<div class="entry"><div class="cmd">journalctl -u &lt;service-name&gt; -f</div>
+<div class="desc">Live-tails a service's logs in real time &mdash; watch it work (or fail) as it happens. Ctrl+C to stop watching.</div></div>
+
+<div class="entry"><div class="cmd">journalctl -u &lt;service-name&gt; --since "15 minutes ago" --no-pager</div>
+<div class="desc">Shows recent history for a service without live-following &mdash; good for reviewing what happened a few minutes ago.</div></div>
+
+<div class="entry"><div class="cmd">journalctl -xe</div>
+<div class="desc">Shows the most recent system-wide log entries with extra context &mdash; useful when you don't know which service is at fault yet.</div></div>
+
+<div class="entry"><div class="cmd">sudo tail -n 50 /var/log/nginx/error.log</div>
+<div class="desc">Shows Nginx's own error log &mdash; the first place to check for 502/504 gateway errors.</div></div>
+
+<div class="entry"><div class="cmd">sudo tail -n 50 /var/log/nginx/access.log</div>
+<div class="desc">Shows recent incoming requests Nginx has handled.</div></div>
+
+<div class="entry"><div class="cmd">sudo dmesg | grep -i "killed process"</div>
+<div class="desc">Checks the kernel log for out-of-memory (OOM) kills &mdash; confirms if the kernel force-killed a process due to low RAM.</div></div>
+
+<h2>System Health (Memory, Disk, CPU)</h2>
+
+<div class="entry"><div class="cmd">free -h</div>
+<div class="desc">Shows total/used/free/available RAM and swap, in human-readable units. Check this whenever the site feels slow.</div></div>
+
+<div class="entry"><div class="cmd">df -h</div>
+<div class="desc">Shows disk space usage across all mounted drives.</div></div>
+
+<div class="entry"><div class="cmd">df -h /</div>
+<div class="desc">Shows disk space for the root partition specifically &mdash; check before creating large files like a swap file.</div></div>
+
+<div class="entry"><div class="cmd">uptime</div>
+<div class="desc">Shows how long the server's been running plus the "load average" &mdash; numbers well above your CPU core count mean the CPU is overloaded.</div></div>
+
+<div class="entry"><div class="cmd">top   /   htop</div>
+<div class="desc">Live, continuously updating view of running processes and their CPU/memory usage. htop is a nicer-looking version (may need installing).</div></div>
+
+<div class="entry"><div class="cmd">du -sh &lt;folder&gt;</div>
+<div class="desc">Shows the total size of a specific folder &mdash; useful for finding what's eating disk space.</div></div>
+
+<h2>Process Inspection</h2>
+
+<div class="entry"><div class="cmd">ps aux | grep &lt;name&gt;</div>
+<div class="desc">Lists running processes matching a keyword &mdash; quick way to check if something (e.g. redis, celery) is actually alive.</div></div>
+
+<div class="entry"><div class="cmd">sudo ss -tlnp | grep &lt;port&gt;</div>
+<div class="desc">Shows what process, if any, is listening on a specific network port.</div></div>
+
+<div class="entry"><div class="cmd">kill &lt;PID&gt;</div>
+<div class="desc">Terminates a process by its ID. Prefer systemctl stop for anything managed by systemd &mdash; kill is for one-off manual processes.</div></div>
+
+<h2>Redis</h2>
+
+<div class="entry"><div class="cmd">redis-cli ping</div>
+<div class="desc">Quick health check &mdash; returns PONG if Redis is running and reachable.</div></div>
+
+<div class="entry"><div class="cmd">redis-cli info memory</div>
+<div class="desc">Shows how much memory Redis itself is currently using.</div></div>
+
+<div class="entry"><div class="cmd">redis-cli monitor</div>
+<div class="desc">Live-streams every command Redis receives in real time &mdash; useful for watching Celery tasks arrive as they happen.</div></div>
+
+<div class="entry"><div class="cmd">redis-cli flushall</div>
+<div class="desc">Deletes everything stored in Redis. Only safe if Redis holds no data you care about (e.g. only used as a Celery queue, not caching).</div></div>
+
+<h2>Celery</h2>
+
+<div class="entry"><div class="cmd">celery -A bookaid status</div>
+<div class="desc">Checks whether any Celery workers are alive and responding. Run from inside the project folder with the venv active.</div></div>
+
+<div class="entry"><div class="cmd">celery -A bookaid inspect active</div>
+<div class="desc">Shows tasks currently being processed right now.</div></div>
+
+<div class="entry"><div class="cmd">celery -A bookaid inspect scheduled</div>
+<div class="desc">Shows tasks that Celery beat has scheduled to run soon.</div></div>
+
+<div class="entry"><div class="cmd">celery -A bookaid inspect registered</div>
+<div class="desc">Lists every task type the worker knows about &mdash; useful to confirm your task functions were picked up correctly.</div></div>
+
+<h2>Django (manage.py)</h2>
+
+<div class="entry"><div class="cmd">python manage.py runserver</div>
+<div class="desc">Starts Django's built-in dev server. Local development only &mdash; never used in production (that's Daphne/Gunicorn's job).</div></div>
+
+<div class="entry"><div class="cmd">python manage.py migrate</div>
+<div class="desc">Applies pending database migrations to update the schema.</div></div>
+
+<div class="entry"><div class="cmd">python manage.py makemigrations</div>
+<div class="desc">Generates new migration files based on changes to your models.</div></div>
+
+<div class="entry"><div class="cmd">python manage.py shell</div>
+<div class="desc">Opens an interactive Python shell with your Django project already loaded &mdash; handy for quick data checks.</div></div>
+
+<div class="entry"><div class="cmd">python manage.py collectstatic</div>
+<div class="desc">Gathers all static files (CSS/JS/images) into one folder for production serving via Nginx.</div></div>
+
+<div class="entry"><div class="cmd">python manage.py createsuperuser</div>
+<div class="desc">Creates a Django admin account interactively.</div></div>
+
+<div class="entry"><div class="cmd">python manage.py dbshell</div>
+<div class="desc">Drops you directly into your database's own command-line shell (psql, for PostgreSQL).</div></div>
+
+<h2>PostgreSQL</h2>
+
+<div class="entry"><div class="cmd">sudo -u postgres psql</div>
+<div class="desc">Logs into PostgreSQL as the superuser account.</div></div>
+
+<div class="entry"><div class="cmd">\l</div>
+<div class="desc">Lists all databases (run inside the psql prompt).</div></div>
+
+<div class="entry"><div class="cmd">\c &lt;dbname&gt;</div>
+<div class="desc">Connects to a specific database (inside psql).</div></div>
+
+<div class="entry"><div class="cmd">\dt</div>
+<div class="desc">Lists all tables in the currently connected database (inside psql).</div></div>
+
+<div class="entry"><div class="cmd">\q</div>
+<div class="desc">Exits the psql prompt.</div></div>
+
+<h2>Git</h2>
+
+<div class="entry"><div class="cmd">git status</div>
+<div class="desc">Shows changed, staged, and untracked files in your current branch.</div></div>
+
+<div class="entry"><div class="cmd">git log --oneline -10</div>
+<div class="desc">Shows the last 10 commits in condensed, one-line-each form.</div></div>
+
+<div class="entry"><div class="cmd">git diff</div>
+<div class="desc">Shows exactly what's changed but not yet committed.</div></div>
+
+<div class="entry"><div class="cmd">git pull origin &lt;branch&gt;</div>
+<div class="desc">Fetches and merges the latest changes from a remote branch.</div></div>
+
+<div class="entry"><div class="cmd">git checkout &lt;branch&gt;</div>
+<div class="desc">Switches to a different branch.</div></div>
+
+<div class="entry"><div class="cmd">git stash</div>
+<div class="desc">Temporarily shelves uncommitted changes so you can switch branches cleanly, restorable later with git stash pop.</div></div>
+
+<h2>Virtual Environment &amp; Packages</h2>
+
+<div class="entry"><div class="cmd">source env/bin/activate</div>
+<div class="desc">Activates the project's Python virtual environment &mdash; isolates its packages from the rest of the system.</div></div>
+
+<div class="entry"><div class="cmd">deactivate</div>
+<div class="desc">Exits the currently active virtual environment.</div></div>
+
+<div class="entry"><div class="cmd">pip list</div>
+<div class="desc">Shows all Python packages installed in the active environment.</div></div>
+
+<div class="entry"><div class="cmd">pip freeze &gt; requirements.txt</div>
+<div class="desc">Writes the currently installed package versions into requirements.txt.</div></div>
+
+<div class="entry"><div class="cmd">sudo apt update</div>
+<div class="desc">Refreshes Ubuntu's package lists. Always run before installing something new.</div></div>
+
+<div class="entry"><div class="cmd">sudo apt install &lt;package&gt; -y</div>
+<div class="desc">Installs a system-level package (e.g. redis-server), auto-confirming the prompt.</div></div>
+
+<div class="footer-note">
+<b>General troubleshooting order:</b> whenever something on the server seems broken, check things in this sequence &mdash;
+<b>systemctl status</b> (is it running?) &rarr; <b>journalctl logs</b> (why did it fail?) &rarr; <b>free -h / df -h</b> (is it a resource problem?) &mdash; before taking any action. This order alone resolves most day-to-day server issues.
+</div>
+
+</body>
+</html>
